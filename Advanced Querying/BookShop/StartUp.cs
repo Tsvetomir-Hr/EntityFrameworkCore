@@ -14,9 +14,9 @@ public class StartUp
         using var context = new BookShopContext();
         DbInitializer.ResetDatabase(context);
 
-        string date = Console.ReadLine();
+        string input = Console.ReadLine();
 
-        string result = GetBooksReleasedBefore(context, date);
+        string result = GetAuthorNamesEndingIn(context, input);
         Console.WriteLine(result);
     }
 
@@ -164,6 +164,25 @@ public class StartUp
         }
 
         return output.ToString().TrimEnd();
+    }
+
+    public static string GetAuthorNamesEndingIn(BookShopContext context, string input)
+    {
+        StringBuilder sb = new StringBuilder();
+        var authors = context.Authors
+            .Where(a => a.FirstName.EndsWith(input))
+            .Select(a=> new
+            {
+               FullName = a.FirstName + " " + a.LastName
+            })
+            .OrderBy(a=>a.FullName)
+            .ToArray();
+
+        foreach(var author in authors)
+        {
+            sb.AppendLine(author.FullName);
+        }
+        return sb.ToString().TrimEnd();
     }
 }
 
