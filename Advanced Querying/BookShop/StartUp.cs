@@ -16,7 +16,7 @@ public class StartUp
 
         string input = Console.ReadLine();
 
-        string result = GetBookTitlesContaining(context, input);
+        string result = GetBooksByAuthor(context, input);
         Console.WriteLine(result);
     }
 
@@ -202,6 +202,28 @@ public class StartUp
         foreach (var book in booksTitles)
         {
             sb.AppendLine(book.Title);
+        }
+        return sb.ToString().TrimEnd();
+    }
+
+    public static string GetBooksByAuthor(BookShopContext context, string input)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        var info = context.Books
+            .Select(b=> new
+            {
+                BookId = b.BookId,
+                BookTitle = b.Title,
+                BookAuthor = b.Author
+            })
+            .Where(b=>b.BookAuthor.LastName.ToUpper().StartsWith(input.ToUpper()))
+            .OrderBy(b=>b.BookId)
+            .ToArray();
+
+        foreach(var book in info)
+        {
+            sb.AppendLine($"{book.BookTitle} ({book.BookAuthor.FirstName} {book.BookAuthor.LastName})");
         }
         return sb.ToString().TrimEnd();
     }
