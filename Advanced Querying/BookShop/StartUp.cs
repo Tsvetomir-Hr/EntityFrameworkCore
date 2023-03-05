@@ -12,7 +12,9 @@ public class StartUp
         using var context = new BookShopContext();
         DbInitializer.ResetDatabase(context);
 
-        string result = GetBooksByPrice(context);
+        int year = int.Parse(Console.ReadLine());
+
+        string result = GetBooksNotReleasedIn(context,year);
         Console.WriteLine(result);
     }
 
@@ -116,6 +118,18 @@ public class StartUp
         return sb.ToString().TrimEnd();
     }
 
+    public static string GetBooksNotReleasedIn(BookShopContext context, int year)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        string [] books = context.Books
+            .OrderBy(b => b.BookId)
+            .Where(b => b.ReleaseDate.Value.Year != year)
+            .Select(b => b.Title)
+            .ToArray();
+
+        return string.Join(Environment.NewLine, books);
+    }
 }
 
 
