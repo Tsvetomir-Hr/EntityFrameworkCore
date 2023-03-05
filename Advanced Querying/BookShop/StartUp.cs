@@ -17,27 +17,57 @@
             Console.WriteLine(result);
         }
 
-        public static string GetBooksByAgeRestriction(BookShopContext context, string command)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
+        //public static string GetBooksByAgeRestriction(BookShopContext context, string command)
+        //{
+        //    StringBuilder stringBuilder = new StringBuilder();
             
-            var books = context.Books
-                .OrderBy(b => b.Title)
-                .ToArray()
-                .Select(b => new
-                {
-                    AgerestrictionTostring = b.AgeRestriction.ToString().ToUpper(),
-                    BookTitle = b.Title,
-                })
-                .Where(b => b.AgerestrictionTostring == command.ToUpper())
-                .ToArray();
+        //    var books = context.Books
+        //        .OrderBy(b => b.Title)
+        //        .ToArray()
+        //        .Select(b => new
+        //        {
+        //            AgerestrictionTostring = b.AgeRestriction.ToString().ToUpper(),
+        //            BookTitle = b.Title,
+        //        })
+        //        .Where(b => b.AgerestrictionTostring == command.ToUpper())
+        //        .ToArray();
                 
                
                 
                 
-            foreach ( var book in books ) 
+        //    foreach ( var book in books ) 
+        //    {
+        //        stringBuilder.AppendLine( book.BookTitle );
+        //    }
+
+        //    return stringBuilder.ToString().TrimEnd();
+        //}
+        public static string GetBooksByAgeRestriction(BookShopContext context, string command)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            AgeRestriction enumToString;
+
+            bool isParseSuccessed = Enum.TryParse<AgeRestriction>(command, true, out enumToString);
+
+            if (!isParseSuccessed)
             {
-                stringBuilder.AppendLine( book.BookTitle );
+                return string.Empty;
+            }
+
+            var books = context.Books
+                .Where(b=>b.AgeRestriction == enumToString)
+                .Select(b => new
+                {
+                    BookTitle = b.Title
+                })
+                .OrderBy(b=>b.BookTitle)
+                .ToArray();
+            
+
+            foreach (var book in books)
+            {
+                stringBuilder.AppendLine(book.BookTitle);
             }
 
             return stringBuilder.ToString().TrimEnd();
