@@ -16,7 +16,7 @@ public class StartUp
 
         string input = Console.ReadLine();
 
-        string result = GetAuthorNamesEndingIn(context, input);
+        string result = GetBookTitlesContaining(context, input);
         Console.WriteLine(result);
     }
 
@@ -169,6 +169,7 @@ public class StartUp
     public static string GetAuthorNamesEndingIn(BookShopContext context, string input)
     {
         StringBuilder sb = new StringBuilder();
+
         var authors = context.Authors
             .Where(a => a.FirstName.EndsWith(input))
             .Select(a=> new
@@ -181,6 +182,26 @@ public class StartUp
         foreach(var author in authors)
         {
             sb.AppendLine(author.FullName);
+        }
+        return sb.ToString().TrimEnd();
+    }
+
+    public static string GetBookTitlesContaining(BookShopContext context, string input)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        var booksTitles = context.Books
+            .Where(b=>b.Title.ToUpper().Contains(input.ToUpper()))
+            .Select(b => new 
+            {
+                Title = b.Title
+            })
+            .OrderBy(b=>b.Title)
+            .ToArray();
+
+        foreach (var book in booksTitles)
+        {
+            sb.AppendLine(book.Title);
         }
         return sb.ToString().TrimEnd();
     }
