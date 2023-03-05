@@ -9,10 +9,10 @@ public class StartUp
 {
     public static void Main()
     {
-        using var db = new BookShopContext();
-        DbInitializer.ResetDatabase(db);
+        using var context = new BookShopContext();
+        DbInitializer.ResetDatabase(context);
 
-        string result = GetGoldenBooks(db);
+        string result = GetBooksByPrice(context);
         Console.WriteLine(result);
     }
 
@@ -77,10 +77,10 @@ public class StartUp
     public static string GetGoldenBooks(BookShopContext context)
     {
         StringBuilder sb = new StringBuilder();
-      
+
         var books = context.Books
             .Where(b => b.Copies < 5000 &&
-            ((int)b.EditionType)==2)
+            ((int)b.EditionType) == 2)
             .OrderBy(b => b.BookId)
             .Select(b => new
             {
@@ -91,6 +91,27 @@ public class StartUp
         foreach (var book in books)
         {
             sb.AppendLine(book.BookTitle);
+        }
+        return sb.ToString().TrimEnd();
+    }
+
+    public static string GetBooksByPrice(BookShopContext context)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        var books = context.Books
+            .Select(b => new 
+            {
+                BookTitle = b.Title,
+                b.Price
+            })
+            .Where(b=>b.Price>40)
+            .OrderByDescending(b=>b.Price)
+            .ToArray();
+
+        foreach(var book in books)
+        {
+            sb.AppendLine($"{book.BookTitle} - ${book.Price:F2}");
         }
         return sb.ToString().TrimEnd();
     }
