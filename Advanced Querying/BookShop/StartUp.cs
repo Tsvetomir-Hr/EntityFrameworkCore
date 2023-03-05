@@ -3,6 +3,8 @@
 using BookShop.Models.Enums;
 using Data;
 using Initializer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text;
 
 public class StartUp
@@ -12,9 +14,9 @@ public class StartUp
         using var context = new BookShopContext();
         DbInitializer.ResetDatabase(context);
 
-        int year = int.Parse(Console.ReadLine());
+        string date = Console.ReadLine();
 
-        string result = GetBooksNotReleasedIn(context,year);
+        string result = GetBooksReleasedBefore(context, date);
         Console.WriteLine(result);
     }
 
@@ -102,16 +104,16 @@ public class StartUp
         StringBuilder sb = new StringBuilder();
 
         var books = context.Books
-            .Select(b => new 
+            .Select(b => new
             {
                 BookTitle = b.Title,
                 b.Price
             })
-            .Where(b=>b.Price>40)
-            .OrderByDescending(b=>b.Price)
+            .Where(b => b.Price > 40)
+            .OrderByDescending(b => b.Price)
             .ToArray();
 
-        foreach(var book in books)
+        foreach (var book in books)
         {
             sb.AppendLine($"{book.BookTitle} - ${book.Price:F2}");
         }
@@ -122,13 +124,46 @@ public class StartUp
     {
         StringBuilder sb = new StringBuilder();
 
-        string [] books = context.Books
+        string[] books = context.Books
             .OrderBy(b => b.BookId)
             .Where(b => b.ReleaseDate.Value.Year != year)
             .Select(b => b.Title)
             .ToArray();
 
         return string.Join(Environment.NewLine, books);
+    }
+
+    public static string GetBooksByCategory(BookShopContext context, string input)
+    {
+        throw new NotImplementedException();
+        //TO DO :
+    }
+
+    public static string GetBooksReleasedBefore(BookShopContext context, string date)
+    {
+        StringBuilder output = new StringBuilder();
+
+        string[] tokens = date.Split('-', StringSplitOptions.RemoveEmptyEntries);
+        int day = int.Parse(tokens[0]);
+        int month = int.Parse(tokens[1]);
+        int year = int.Parse(tokens[2]);
+        DateTime inputDate = new DateTime(year, month, day);
+        var books = context.Books
+            .OrderByDescending(b => b.ReleaseDate)
+            .Where(b => b.ReleaseDate < inputDate)
+            .Select(b => new
+            {
+                BookTitle = b.Title,
+                BookEdtiton = b.EditionType.ToString(),
+                BookPrice = b.Price
+            })
+            .ToArray();
+        foreach (var book in books)
+        {
+            output.AppendLine($"{book.BookTitle} - {book.BookEdtiton} - ${book.BookPrice:F2}");
+        }
+
+        return output.ToString().TrimEnd();
     }
 }
 

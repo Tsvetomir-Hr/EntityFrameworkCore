@@ -4,5 +4,7 @@
     {
         internal static string ConnectionString
             => @"Server=CECOPC\SQLEXPRESS;Database=BookShop;Integrated Security=True;";
+
+        
     }
 }
