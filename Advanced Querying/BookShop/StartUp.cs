@@ -14,9 +14,10 @@ public class StartUp
         using var context = new BookShopContext();
         DbInitializer.ResetDatabase(context);
 
-       int number = int.Parse(Console.ReadLine());
+        string input = Console.ReadLine();
 
-        int result = CountBooks(context, number);
+        string result = GetBooksByCategory(context, input);
+
         Console.WriteLine(result);
     }
 
@@ -135,8 +136,20 @@ public class StartUp
 
     public static string GetBooksByCategory(BookShopContext context, string input)
     {
-        throw new NotImplementedException();
-        //TO DO :
+        string[] categories = input.Split(" ", StringSplitOptions.RemoveEmptyEntries)
+            .Select(bt => bt.ToLower())
+            .ToArray();
+
+
+        string[] output = context.Books
+            .Where(b => b.BookCategories
+            .Any(bc => categories.Contains(bc.Category.Name.ToLower())))
+            .OrderBy(b => b.Title)
+            .Select(b => b.Title)
+            .ToArray();
+
+        return string.Join(Environment.NewLine, output);
+
     }
 
     public static string GetBooksReleasedBefore(BookShopContext context, string date)
@@ -172,14 +185,14 @@ public class StartUp
 
         var authors = context.Authors
             .Where(a => a.FirstName.EndsWith(input))
-            .Select(a=> new
+            .Select(a => new
             {
-               FullName = a.FirstName + " " + a.LastName
+                FullName = a.FirstName + " " + a.LastName
             })
-            .OrderBy(a=>a.FullName)
+            .OrderBy(a => a.FullName)
             .ToArray();
 
-        foreach(var author in authors)
+        foreach (var author in authors)
         {
             sb.AppendLine(author.FullName);
         }
@@ -191,12 +204,12 @@ public class StartUp
         StringBuilder sb = new StringBuilder();
 
         var booksTitles = context.Books
-            .Where(b=>b.Title.ToUpper().Contains(input.ToUpper()))
-            .Select(b => new 
+            .Where(b => b.Title.ToUpper().Contains(input.ToUpper()))
+            .Select(b => new
             {
                 Title = b.Title
             })
-            .OrderBy(b=>b.Title)
+            .OrderBy(b => b.Title)
             .ToArray();
 
         foreach (var book in booksTitles)
@@ -211,17 +224,17 @@ public class StartUp
         StringBuilder sb = new StringBuilder();
 
         var info = context.Books
-            .Select(b=> new
+            .Select(b => new
             {
                 BookId = b.BookId,
                 BookTitle = b.Title,
                 BookAuthor = b.Author
             })
-            .Where(b=>b.BookAuthor.LastName.ToUpper().StartsWith(input.ToUpper()))
-            .OrderBy(b=>b.BookId)
+            .Where(b => b.BookAuthor.LastName.ToUpper().StartsWith(input.ToUpper()))
+            .OrderBy(b => b.BookId)
             .ToArray();
 
-        foreach(var book in info)
+        foreach (var book in info)
         {
             sb.AppendLine($"{book.BookTitle} ({book.BookAuthor.FirstName} {book.BookAuthor.LastName})");
         }
@@ -235,7 +248,7 @@ public class StartUp
             .Count(b => b.Title.ToString().Length > lengthCheck);
 
         return numberOfBooks;
-            
+
     }
 }
 
