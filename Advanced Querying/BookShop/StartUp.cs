@@ -14,9 +14,9 @@ public class StartUp
         using var context = new BookShopContext();
         DbInitializer.ResetDatabase(context);
 
-        string input = Console.ReadLine();
+       int number = int.Parse(Console.ReadLine());
 
-        string result = GetBooksByAuthor(context, input);
+        int result = CountBooks(context, number);
         Console.WriteLine(result);
     }
 
@@ -226,6 +226,16 @@ public class StartUp
             sb.AppendLine($"{book.BookTitle} ({book.BookAuthor.FirstName} {book.BookAuthor.LastName})");
         }
         return sb.ToString().TrimEnd();
+    }
+
+    public static int CountBooks(BookShopContext context, int lengthCheck)
+    {
+        var numberOfBooks = context.Books
+            .ToArray()
+            .Count(b => b.Title.ToString().Length > lengthCheck);
+
+        return numberOfBooks;
+            
     }
 }
 
