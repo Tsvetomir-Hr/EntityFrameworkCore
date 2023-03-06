@@ -1,5 +1,6 @@
 ﻿namespace BookShop;
 
+using BookShop.Models;
 using BookShop.Models.Enums;
 using Data;
 using Initializer;
@@ -16,7 +17,7 @@ public class StartUp
 
         //string input = Console.ReadLine();
 
-        string result = CountCopiesByAuthor(context);
+        string result = GetTotalProfitByCategory(context);
 
         Console.WriteLine(result);
     }
@@ -260,13 +261,33 @@ public class StartUp
                 AuthorFullName = $"{a.FirstName} {a.LastName}",
                 BookCopies = a.Books.Sum(b => b.Copies)
             })
-            .OrderByDescending(a=>a.BookCopies);
+            .OrderByDescending(a => a.BookCopies);
 
         foreach (var book in output)
         {
             stringBuilder.AppendLine($"{book.AuthorFullName} - {book.BookCopies}");
         }
         return stringBuilder.ToString().TrimEnd();
+    }
+
+    public static string GetTotalProfitByCategory(BookShopContext context)
+    {
+        var output = new StringBuilder();
+
+        var result = context.BooksCategories
+            .Select(bc => new
+            {
+                CategoryName = bc.Category.Name,
+                TotalProfit = bc.Category.Name.Sum(b=>bc.Book.Copies)
+            })
+            .OrderByDescending(b=>b.TotalProfit)
+            .ThenBy(b=>b.CategoryName);
+
+        foreach (var book in result)
+        {
+            output.AppendLine($"{book.CategoryName} {book.TotalProfit:F2}");
+        }
+        return output.ToString().TrimEnd();
     }
 }
 
