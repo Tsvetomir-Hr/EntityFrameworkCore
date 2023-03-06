@@ -14,9 +14,9 @@ public class StartUp
         using var context = new BookShopContext();
         DbInitializer.ResetDatabase(context);
 
-        string input = Console.ReadLine();
+        //string input = Console.ReadLine();
 
-        string result = GetBooksByCategory(context, input);
+        string result = CountCopiesByAuthor(context);
 
         Console.WriteLine(result);
     }
@@ -249,6 +249,24 @@ public class StartUp
 
         return numberOfBooks;
 
+    }
+
+    public static string CountCopiesByAuthor(BookShopContext context)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        var output = context.Authors
+            .Select(a => new
+            {
+                AuthorFullName = $"{a.FirstName} {a.LastName}",
+                BookCopies = a.Books.Sum(b => b.Copies)
+            })
+            .OrderByDescending(a=>a.BookCopies);
+
+        foreach (var book in output)
+        {
+            stringBuilder.AppendLine($"{book.AuthorFullName} - {book.BookCopies}");
+        }
+        return stringBuilder.ToString().TrimEnd();
     }
 }
 
