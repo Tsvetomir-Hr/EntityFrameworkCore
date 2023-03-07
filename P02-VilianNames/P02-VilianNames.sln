@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADI.NET_Exercise", "ADI.NET_Exercise\ADI.NET_Exercise.csproj", "{E0D7BDB8-89A8-4109-8945-D70CEB3D769F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P03-MinionNames", "P03-MinionNames\P03-MinionNames.csproj", "{168E97AB-F686-441B-AC58-D5210FEC67D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0D7BDB8-89A8-4109-8945-D70CEB3D769F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D7BDB8-89A8-4109-8945-D70CEB3D769F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D7BDB8-89A8-4109-8945-D70CEB3D769F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D7BDB8-89A8-4109-8945-D70CEB3D769F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{168E97AB-F686-441B-AC58-D5210FEC67D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{168E97AB-F686-441B-AC58-D5210FEC67D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{168E97AB-F686-441B-AC58-D5210FEC67D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{168E97AB-F686-441B-AC58-D5210FEC67D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBB31446-3AF9-4550-90AD-AA5EC157A63E}
+	EndGlobalSection
+EndGlobal
