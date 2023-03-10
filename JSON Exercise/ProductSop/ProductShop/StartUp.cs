@@ -4,22 +4,20 @@ using Newtonsoft.Json;
 using ProductShop.Data;
 using ProductShop.DTOs.Import;
 using ProductShop.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProductShop
 {
     public class StartUp
     {
 
-       
+
         public static void Main()
         {
-        
-            
-            
+
             ProductShopContext dbContext = new ProductShopContext();
 
             string inputJson = File.ReadAllText("../../../Datasets/users.json");
-
 
             //dbContext.Database.EnsureDeleted();
             //dbContext.Database.EnsureCreated();
@@ -41,6 +39,10 @@ namespace ProductShop
 
             foreach (ImportUserDto userDto in userDtos)
             {
+                if (!IsValid(userDto))
+                {
+                    continue;
+                }
                 User user = mapper.Map<User>(userDto);
                 users.Add(user);
             }
@@ -50,6 +52,15 @@ namespace ProductShop
 
             return $"Successfully imported {users.Count}";
 
+        }
+
+        private static bool IsValid(object obj)
+        {
+            var validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(obj);
+            var validationResult = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(obj, validationContext, validationResult, true);
+            return isValid;
         }
     }
 }

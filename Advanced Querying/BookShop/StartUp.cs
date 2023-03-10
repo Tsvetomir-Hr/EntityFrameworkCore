@@ -274,11 +274,13 @@ public class StartUp
     {
         var output = new StringBuilder();
 
-        var result = context.BooksCategories
-            .Select(bc => new
+        var result = context.Categories
+            .Include(c=>c.CategoryBooks)
+            .ThenInclude(c=>c.Book)
+            .Select(c => new
             {
-                CategoryName = bc.Category.Name,
-                TotalProfit = bc.Category.Name.Sum(b=>bc.Book.Copies)
+                CategoryName = c.Name,
+                TotalProfit = c.CategoryBooks.Sum(c => c.Book.Copies)
             })
             .OrderByDescending(b=>b.TotalProfit)
             .ThenBy(b=>b.CategoryName);
