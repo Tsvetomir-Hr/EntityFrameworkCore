@@ -28,6 +28,28 @@ namespace ProductShop
             Console.WriteLine(output);
         }
 
-       
+        public static string ImportUsers(ProductShopContext context, string inputJson)
+        {
+            Mapper mapper = new Mapper(new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ProductShopProfile>();
+            }));
+
+            ImportUserDto[] userDtos = JsonConvert.DeserializeObject<ImportUserDto[]>(inputJson);
+
+            ICollection<User> users = new List<User>();
+
+            foreach (ImportUserDto userDto in userDtos)
+            {
+                User user = mapper.Map<User>(userDto);
+                users.Add(user);
+            }
+
+            context.Users.AddRange(users);
+            context.SaveChanges();
+
+            return $"Successfully imported {users.Count}";
+
+        }
     }
 }
