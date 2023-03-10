@@ -11,6 +11,7 @@ namespace ProductShop.Common
         public const string UserImportPath = "../../../Datasets/users.json";
         public const string ProductImportPath = "../../../Datasets/products.json";
         public const string CategoriesImportPath = "../../../Datasets/categories.json";
+        public const string CategoryProductsPath  = "../../../Datasets/categories-products.json";
 
 
     }

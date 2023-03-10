@@ -8,6 +8,6 @@ namespace ProductShop.DTOs.Import;
 public class ImportCategoryDto
 {
     [JsonProperty("Name")]
-    [Required]   
+    [Required]
     public string Name { get; set; }
 }

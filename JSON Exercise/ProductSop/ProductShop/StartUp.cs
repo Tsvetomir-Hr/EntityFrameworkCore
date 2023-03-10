@@ -18,12 +18,12 @@ namespace ProductShop
 
             ProductShopContext dbContext = new ProductShopContext();
 
-            string inputJson = File.ReadAllText(ProjectImportPaths.CategoriesImportPath);
+            string inputJson = File.ReadAllText(ProjectImportPaths.CategoryProductsPath);
 
             //dbContext.Database.EnsureDeleted();
             //dbContext.Database.EnsureCreated();
 
-            string output = ImportCategories(dbContext, inputJson);
+            string output = ImportCategoryProducts(dbContext, inputJson);
             Console.WriteLine(output);
         }
 
@@ -104,6 +104,30 @@ namespace ProductShop
             return $"Successfully imported {categories.Count}";
 
         }
+        public static string ImportCategoryProducts(ProductShopContext context, string inputJson)
+        {
+            var mapper = InitializeMapper();
+
+            ImportCategoryProductsDto[]? cpDtos = JsonConvert.DeserializeObject<ImportCategoryProductsDto[]>(inputJson);
+
+            ICollection<CategoryProduct> categoryProducts = new List<CategoryProduct>();
+
+            foreach (var cpDto in cpDtos)
+            {
+                 if (!IsValid(cpDto))
+                {
+                    continue;
+                }
+
+                      CategoryProduct cp = mapper.Map<CategoryProduct>(cpDto);
+                categoryProducts.Add(cp);
+            }
+            context.CategoriesProducts.AddRange(categoryProducts);
+            context.SaveChanges();
+
+            return $"Successfully imported {categoryProducts.Count}";
+        }
+
 
         private static bool IsValid(object obj)
         {
