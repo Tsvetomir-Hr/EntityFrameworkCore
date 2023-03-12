@@ -1,60 +1,95 @@
 ﻿using CarDealer.Data;
 using CarDealer.DTOs.Import;
 using CarDealer.Models;
-using Microsoft.EntityFrameworkCore.Storage;
 using System.Xml.Serialization;
 
-namespace CarDealer
+namespace CarDealer;
+
+public class StartUp
 {
-    public class StartUp
+    public static void Main()
     {
-        public static void Main()
+        CarDealerContext dbContext = new CarDealerContext();
+
+        string xml = File.ReadAllText("../../../Datasets/parts.xml");
+
+        string result = ImportParts(dbContext, xml);
+        //dbContext.Database.EnsureDeleted();
+        //dbContext.Database.EnsureCreated();
+
+        Console.WriteLine(result);
+    }
+
+
+
+    public static string ImportSuppliers(CarDealerContext context, string inputXml)
+    {
+        XmlRootAttribute xmlRoot = new XmlRootAttribute("Suppliers"); // root
+
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(ImportSupplierDto[]), xmlRoot);
+
+        using StringReader xmlReader = new StringReader(inputXml);
+
+        ImportSupplierDto[] dtos = (ImportSupplierDto[])xmlSerializer
+            .Deserialize(xmlReader);
+
+        Supplier[] suppliers = dtos.Select(s => new Supplier
         {
-            CarDealerContext dbContext = new CarDealerContext();
+            Name = s.Name,
+            IsImporter = s.IsisImporter
+        })
+            .ToArray();
 
-            string xml = File.ReadAllText("../../../Datasets/suppliers.xml");
+        context.Suppliers.AddRange(suppliers);
+        context.SaveChanges();
 
-            string result = ImportSuppliers(dbContext, xml);
-            //dbContext.Database.EnsureDeleted();
-            //dbContext.Database.EnsureCreated();
+        return $"Successfully imported {suppliers.Length}";
+    }
+    public static string ImportParts(CarDealerContext context, string inputXml)
+    {
+        XmlRootAttribute xmlRoot = new XmlRootAttribute("Parts");
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(ImportPartDto[]), xmlRoot);
 
-            Console.WriteLine(result);
-        }
+        using StringReader xmlReader = new StringReader(inputXml);
 
-        public static string ImportSuppliers(CarDealerContext context, string inputXml)
+        ImportPartDto[] partDtos = (ImportPartDto[])xmlSerializer.Deserialize(xmlReader);
+
+        ICollection<Part> parts = new List<Part>();
+
+        foreach (ImportPartDto partDto in partDtos)
         {
-            XmlRootAttribute xmlRoot = new XmlRootAttribute("Suppliers"); // root
 
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ImportSupplierDto[]), xmlRoot);
-
-            using StringReader xmlReader = new StringReader(inputXml);
-
-            ImportSupplierDto[] dtos = (ImportSupplierDto[])xmlSerializer
-                .Deserialize(xmlReader);
-
-            Supplier[] suppliers = dtos.Select(s => new Supplier
+            if (!context.Suppliers.Any(s => s.Id == partDto.SupplierId))
             {
-                Name = s.Name,
-                IsImporter = s.IsisImporter
-            })
-                .ToArray();
+                continue;
+            }
 
-            context.Suppliers.AddRange(suppliers);
-            context.SaveChanges();
+            Part part = new Part()
+            {
+                Name = partDto.Name,
+                Price = partDto.Price,
+                Quantity = partDto.Quantity,
+                SupplierId = partDto.SupplierId
+            };
 
-            return $"Successfully imported {suppliers.Length}";
+            parts.Add(part);
         }
 
-        private static T Desirialize<T>(string inputXml, string rootName)
-        {
-            XmlRootAttribute xmlRoot = new XmlRootAttribute(rootName); // root
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T), xmlRoot);
+        context.Parts.AddRange(parts);
+        context.SaveChanges();
 
-            using StringReader xmlReader = new StringReader(inputXml);
-            T dtos = (T)xmlSerializer
-                .Deserialize(xmlReader);
+        return $"Successfully imported {parts.Count}";
+    }
 
-            return dtos;
-        }
+    private static T Desirialize<T>(string inputXml, string rootName)
+    {
+        XmlRootAttribute xmlRoot = new XmlRootAttribute(rootName); // root
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(T), xmlRoot);
+
+        using StringReader xmlReader = new StringReader(inputXml);
+        T dtos = (T)xmlSerializer
+            .Deserialize(xmlReader);
+
+        return dtos;
     }
 }
