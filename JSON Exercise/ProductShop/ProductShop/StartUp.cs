@@ -1,6 +1,7 @@
 ﻿namespace ProductShop;
 
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProductShop.Data;
 using ProductShop.DTOs.Import;
@@ -13,12 +14,14 @@ public class StartUp
     {
 
         ProductShopContext context = new ProductShopContext();
-        string inputJson = File.ReadAllText("../../../Datasets/categories-products.json");
 
-        string result = ImportCategoryProducts(context, inputJson);
+
+        string result = GetProductsInRange(context);
 
         Console.WriteLine(result);
     }
+
+    //Imports
     public static string ImportUsers(ProductShopContext context, string inputJson)
     {
         IMapper mapper = new Mapper(new MapperConfiguration(cfg =>
@@ -105,6 +108,26 @@ public class StartUp
         return $"Successfully imported {validCategoryProducts.Count}";
 
     }
+
+
+    //Exports
+    public static string GetProductsInRange(ProductShopContext context)
+    {
+        var prodcuts = context.Products
+            .Where(p => p.Price >= 500 && p.Price <= 1000)
+            .OrderBy(p => p.Price)
+            .Select(p => new
+            {
+                name = p.Name,
+                price = p.Price,
+                seller = $"{p.Seller.FirstName} {p.Seller.LastName}"
+            })
+            .AsNoTracking()
+            .ToArray();
+
+        return JsonConvert.SerializeObject(prodcuts, Formatting.Indented);
+    }
+
 
     private static IMapper CreateMappper()
     {
