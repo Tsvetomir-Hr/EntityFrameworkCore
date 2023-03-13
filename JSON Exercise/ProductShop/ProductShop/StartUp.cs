@@ -13,9 +13,9 @@ public class StartUp
     {
 
         ProductShopContext context = new ProductShopContext();
-        string inputJson = File.ReadAllText("../../../Datasets/users.json");
+        string inputJson = File.ReadAllText("../../../Datasets/products.json");
 
-        string result = ImportUsers(context, inputJson);
+        string result = ImportProducts(context, inputJson);
 
         Console.WriteLine(result);
     }
@@ -25,6 +25,7 @@ public class StartUp
         {
             cfg.AddProfile<ProductShopProfile>();
         }));
+
         InportUserDto[] userDtos = JsonConvert.DeserializeObject<InportUserDto[]>(inputJson);
 
         ICollection<User> validUser = new HashSet<User>();
@@ -40,6 +41,32 @@ public class StartUp
         context.SaveChanges();
 
         return $"Successfully imported {validUser.Count}";
+    }
+    public static string ImportProducts(ProductShopContext context, string inputJson)
+    {
+        IMapper mapper = CreateMappper();
+
+        ImportProductDto[] productDtos = JsonConvert.DeserializeObject<ImportProductDto[]>(inputJson);
+        ICollection<Product> validProducts = new HashSet<Product>();
+
+        foreach (var productDto in productDtos)
+        {
+            Product product = mapper.Map<Product>(productDto);
+            validProducts.Add(product);
+        }
+        context.Products.AddRange(validProducts);
+        context.SaveChanges();
+
+        return $"Successfully imported {validProducts.Count}";
+
+    }
+
+    private static IMapper CreateMappper()
+    {
+        return new Mapper(new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<ProductShopProfile>();
+        }));
     }
 }
 
