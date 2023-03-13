@@ -6,10 +6,12 @@ namespace ProductShop
 {
     public class ProductShopProfile : Profile
     {
-        public ProductShopProfile() 
+        public ProductShopProfile()
         {
-            this.CreateMap<InportUserDto,User>();
-            this.CreateMap<ImportProductDto,Product>();
+            this.CreateMap<InportUserDto, User>();
+            this.CreateMap<ImportProductDto, Product>();
+            this.CreateMap<ImportCategorieDto, Category>();
+            this.CreateMap<ImportCategoryProductsDto, CategoryProduct>();
         }
     }
 }

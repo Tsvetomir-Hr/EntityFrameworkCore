@@ -13,9 +13,9 @@ public class StartUp
     {
 
         ProductShopContext context = new ProductShopContext();
-        string inputJson = File.ReadAllText("../../../Datasets/products.json");
+        string inputJson = File.ReadAllText("../../../Datasets/categories-products.json");
 
-        string result = ImportProducts(context, inputJson);
+        string result = ImportCategoryProducts(context, inputJson);
 
         Console.WriteLine(result);
     }
@@ -58,6 +58,51 @@ public class StartUp
         context.SaveChanges();
 
         return $"Successfully imported {validProducts.Count}";
+
+    }
+    public static string ImportCategories(ProductShopContext context, string inputJson)
+    {
+        IMapper mapper = CreateMappper();
+        ImportCategorieDto[] categoryDtos = JsonConvert.DeserializeObject<ImportCategorieDto[]>(inputJson);
+        ICollection<Category> validCategories = new HashSet<Category>();
+        foreach (var categoryDto in categoryDtos)
+        {
+            if (String.IsNullOrEmpty(categoryDto.Name))
+            {
+                continue;
+            }
+            Category category = mapper.Map<Category>(categoryDto);
+            validCategories.Add(category);
+        }
+        context.Categories.AddRange(validCategories);
+        context.SaveChanges();
+
+        return $"Successfully imported {validCategories.Count}";
+    }
+    public static string ImportCategoryProducts(ProductShopContext context, string inputJson)
+    {
+        IMapper mapper = CreateMappper();
+
+        ImportCategoryProductsDto[] categortyProductsDtos = JsonConvert
+            .DeserializeObject<ImportCategoryProductsDto[]>(inputJson);
+
+        ICollection<CategoryProduct> validCategoryProducts = new HashSet<CategoryProduct>();
+
+        foreach (var cpDto in categortyProductsDtos)
+        {
+            if (!context.Categories.Any(c => c.Id == cpDto.CategoryId) ||
+                !context.Products.Any(p => p.Id == cpDto.ProductId))
+            {
+                continue;
+            }
+            CategoryProduct categoryProduct = mapper.Map<CategoryProduct>(cpDto);
+            validCategoryProducts.Add(categoryProduct);
+
+        }
+        context.CategoriesProducts.AddRange(validCategoryProducts);
+        context.SaveChanges();
+
+        return $"Successfully imported {validCategoryProducts.Count}";
 
     }
 
