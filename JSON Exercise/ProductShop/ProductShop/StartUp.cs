@@ -16,7 +16,7 @@ public class StartUp
         ProductShopContext context = new ProductShopContext();
 
 
-        string result = GetSoldProducts(context);
+        string result = GetCategoriesByProductsCount(context);
 
         Console.WriteLine(result);
     }
@@ -153,6 +153,25 @@ public class StartUp
         return JsonConvert.SerializeObject(users, Formatting.Indented);
     }
 
+    public static string GetCategoriesByProductsCount(ProductShopContext context)
+    {
+        var categories = context.Categories
+            .OrderByDescending(c => c.CategoriesProducts.Count)
+            .Select(c => new
+            {
+                category = c.Name,
+                productsCount = c.CategoriesProducts.Count,
+                averagePrice = c.CategoriesProducts.Average(cp=>cp.Product.Price).ToString("F2"),
+                totalRevenue = c.CategoriesProducts.Sum(cp=>cp.Product.Price).ToString("F2")
+            })
+            .AsNoTracking()
+            .ToArray();
+            
+
+        return JsonConvert.SerializeObject (categories, Formatting.Indented);
+         
+            
+    }
 
     private static IMapper CreateMappper()
     {
