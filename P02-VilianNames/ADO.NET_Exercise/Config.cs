@@ -6,7 +6,7 @@ namespace ADI.NET_Exercise
 {
     public static class Config
     {
-        public const string ConnectionString= @"Server=CECOTO\SQLEXPRESS;
+        public const string ConnectionString= @"Server=.;
             Database=MinionsDB;
             Integrated Security=true";
     }
