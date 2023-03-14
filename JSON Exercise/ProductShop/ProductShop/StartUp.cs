@@ -16,7 +16,7 @@ public class StartUp
         ProductShopContext context = new ProductShopContext();
 
 
-        string result = GetProductsInRange(context);
+        string result = GetSoldProducts(context);
 
         Console.WriteLine(result);
     }
@@ -126,6 +126,31 @@ public class StartUp
             .ToArray();
 
         return JsonConvert.SerializeObject(prodcuts, Formatting.Indented);
+    }
+
+    public static string GetSoldProducts(ProductShopContext context)
+    {
+        var users = context.Users.
+            Where(u => u.ProductsSold.Any(b=>b.Buyer!=null))
+            .OrderBy(u => u.LastName)
+            .ThenBy(u => u.FirstName)
+            .Select(u => new
+            {
+                firstName = u.FirstName,
+                lastName = u.LastName,
+                soldProducts = u.ProductsSold
+                .Where(sp=>sp.Buyer!=null)
+                .Select(sp=>new
+                {
+                    name = sp.Name,
+                    price = sp.Price,
+                    buyerFirstName = sp.Buyer.FirstName,
+                    buyerLastName = sp.Buyer.LastName
+                })
+            })            
+            .ToArray();
+
+        return JsonConvert.SerializeObject(users, Formatting.Indented);
     }
 
 
