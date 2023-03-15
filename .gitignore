@@ -3,3 +3,4 @@ bin
 .vs
 zip
 /XML Exercise/CarDealer/Data/Configuration.cs
+/JSON Exercise/ProductShop/ProductShop/Data/Configuration.cs
