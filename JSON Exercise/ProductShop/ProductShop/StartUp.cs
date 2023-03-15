@@ -173,6 +173,19 @@ public class StartUp
             
     }
 
+    public static string GetUsersWithProducts(ProductShopContext context)
+    {
+        var users = context.Users
+            .Where(u => u.ProductsSold.Any(ps => ps.Buyer != null))
+            .OrderByDescending(ps => ps.ProductsSold.Count)
+            .Select(u => new 
+            {
+
+            })
+            .AsNoTracking()
+            .ToArray();
+            
+    }
     private static IMapper CreateMappper()
     {
         return new Mapper(new MapperConfiguration(cfg =>
