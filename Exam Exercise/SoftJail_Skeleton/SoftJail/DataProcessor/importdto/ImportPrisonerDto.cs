@@ -5,11 +5,12 @@ using Newtonsoft.Json;
 
 namespace SoftJail.DataProcessor.ImportDto
 {
+    [JsonObject]
     public class ImportPrisonerDto
     {
         [Required]
-        [Range(ValidationConstants.PrisonerFullNameMinLength,
-            ValidationConstants.PrisonerFullNameMaxLength)]
+        [MinLength(ValidationConstants.PrisonerFullNameMinLength)]
+        [MaxLength(ValidationConstants.PrisonerFullNameMaxLength)]
         [JsonProperty(nameof(FullName))]
         public string FullName { get; set; }
 

@@ -20,6 +20,8 @@ namespace SoftJail.Common
         //Officer
         public const int OfficerFullNameMinLength = 3;
         public const int OfficerFullNameMaxLength = 30;
+        public const string OfficerMinSalary = "0";
+        public const string OfficerMaxSalary = "79228162514264337593543950335";
         //Department
         public const int DepartmentFullNameMinLength = 3;
         public const int DepartmentFullNameMaxLength = 25;

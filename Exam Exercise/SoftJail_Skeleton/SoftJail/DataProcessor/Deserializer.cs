@@ -5,13 +5,17 @@
     using Microsoft.EntityFrameworkCore.Internal;
     using Newtonsoft.Json;
     using SoftJail.Data.Models;
+    using SoftJail.Data.Models.Enums;
+    using SoftJail.DataProcessor.importdto;
     using SoftJail.DataProcessor.ImportDto;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Xml.Serialization;
 
     public class Deserializer
     {
@@ -136,7 +140,66 @@
 
         public static string ImportOfficersPrisoners(SoftJailDbContext context, string xmlString)
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("Officers");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ImportOfficerWithPrisonersDto[]),xmlRoot);
+
+            StringReader xmlReader = new StringReader(xmlString);
+
+            ImportOfficerWithPrisonersDto[] officerDtos = (ImportOfficerWithPrisonersDto[])xmlSerializer.Deserialize(xmlReader);
+
+            ICollection<Officer> validOfficers = new HashSet<Officer>();
+
+            foreach (var ofDto in officerDtos)
+            {
+                if (!IsValid(ofDto))
+                {
+                    sb.AppendLine("Invalid Data");
+                    continue;
+                }
+                bool isPositionValid = Enum.TryParse<Position>(ofDto.Position, out Position position);
+                if (!isPositionValid)
+                {
+                    sb.AppendLine("Invalid Data");
+                    continue;
+                }
+                bool isWeaponValid = Enum.TryParse<Weapon>(ofDto.Weapon, out Weapon weapon);
+
+                if (!isWeaponValid)
+                {
+                    sb.AppendLine("Invalid Data");
+                    continue;
+                }
+                if (!context.Departments.Any(d=>d.Id==ofDto.DeaprtmentId))
+                {
+                    sb.AppendLine("Invalid Data");
+                    continue;
+                }
+                Officer officer = new Officer()
+                {
+                    FullName = ofDto.FullName,
+                    Salary = ofDto.Salary,
+                    Position = position,
+                    Weapon = weapon,
+                    DepartmentId = ofDto.DeaprtmentId,
+                };
+
+                foreach (var prisonerDto in ofDto.OfficerPrisoners)
+                {
+                    OfficerPrisoner prisoner = new OfficerPrisoner()
+                    {
+                       PrisonerId = prisonerDto.Id,
+                    };
+                    officer.OfficerPrisoners.Add(prisoner);
+                }
+                validOfficers.Add(officer);
+                sb.AppendLine($"Imported {officer.FullName} ({officer.OfficerPrisoners.Count} prisoners)");
+            }
+            context.AddRange(validOfficers);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         private static bool IsValid(object obj)
