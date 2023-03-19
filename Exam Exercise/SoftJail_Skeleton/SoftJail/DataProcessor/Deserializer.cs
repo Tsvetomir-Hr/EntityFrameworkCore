@@ -110,7 +110,7 @@
                     }
                     releaseDate = releaseDateValue;
                 }
-               
+
                 Prisoner prisoner = new Prisoner()
                 {
                     FullName = prDto.FullName,
@@ -143,7 +143,7 @@
             StringBuilder sb = new StringBuilder();
 
             XmlRootAttribute xmlRoot = new XmlRootAttribute("Officers");
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ImportOfficerWithPrisonersDto[]),xmlRoot);
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ImportOfficerWithPrisonersDto[]), xmlRoot);
 
             StringReader xmlReader = new StringReader(xmlString);
 
@@ -164,6 +164,7 @@
                     sb.AppendLine("Invalid Data");
                     continue;
                 }
+
                 bool isWeaponValid = Enum.TryParse<Weapon>(ofDto.Weapon, out Weapon weapon);
 
                 if (!isWeaponValid)
@@ -171,11 +172,7 @@
                     sb.AppendLine("Invalid Data");
                     continue;
                 }
-                if (!context.Departments.Any(d=>d.Id==ofDto.DeaprtmentId))
-                {
-                    sb.AppendLine("Invalid Data");
-                    continue;
-                }
+
                 Officer officer = new Officer()
                 {
                     FullName = ofDto.FullName,
@@ -189,7 +186,7 @@
                 {
                     OfficerPrisoner prisoner = new OfficerPrisoner()
                     {
-                       PrisonerId = prisonerDto.Id,
+                        PrisonerId = prisonerDto.Id,
                     };
                     officer.OfficerPrisoners.Add(prisoner);
                 }
