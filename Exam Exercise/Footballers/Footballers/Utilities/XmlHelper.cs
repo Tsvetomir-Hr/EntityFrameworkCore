@@ -1,8 +1,7 @@
 ﻿using System.Text;
 using System.Xml.Serialization;
-using Theatre.DataProcessor.ExportDto;
 
-namespace Theatre.Utilities;
+namespace Footballers.Utilities;
 
 public class XmlHelper
 {
