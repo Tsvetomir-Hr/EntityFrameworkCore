@@ -28,6 +28,10 @@ namespace Artillery.Common
 
         public const int ShellCaliberMinLength = 4;
         public const int ShellCaliberMaxLength = 30;
+
+        public const string ShellWeightMin = "2";
+        public const string ShellWeightMax = "1680";
+
         //Gun
         public const int GunWeightMin = 100;
         public const int GunWeightMax = 1_350_000;

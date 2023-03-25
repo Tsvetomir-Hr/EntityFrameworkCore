@@ -24,11 +24,7 @@
 
         public DbSet<Shell> Shells { get; set; } = null!;
 
-       // public DbSet<CountryGun> CountryGuns { get; set; }
-
-
-
-
+        public DbSet<CountryGun> CountriesGuns { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
