@@ -26,5 +26,5 @@ public class ImportTeamWithFootballersDto
 
     [JsonProperty("Footballers")]
     [Required]
-    public int[] FootballersIds { get; set; } = null!;
+    public HashSet<int> FootballersIds { get; set; } = null!;
 }

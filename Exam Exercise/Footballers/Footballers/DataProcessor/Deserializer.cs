@@ -143,12 +143,18 @@
                         output.AppendLine(ErrorMessage);
                         continue;
                     }
-                    TeamFootballer footballer = new TeamFootballer()
-                    {
-                        FootballerId = fDto
-                    };
+                    Footballer footballer = context.Footballers.Find(fDto);
 
-                    team.TeamsFootballers.Add(footballer);
+                    if (footballer == null)
+                    {
+                        output.AppendLine(ErrorMessage);
+                        continue;
+                    }
+
+                    team.TeamsFootballers.Add(new TeamFootballer()
+                    {
+                        Footballer = footballer
+                    });
                 }
                 validTeams.Add(team);
                 output.AppendLine($"Successfully imported team - {team.Name} with {team.TeamsFootballers.Count} footballers.");
