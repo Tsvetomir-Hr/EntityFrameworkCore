@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace VaporStore.Common
 {
-    internal class GlobalConstants
+    public class GlobalConstants
     {
+        //user
+        public const int UsernameMinLength = 3;
+        public const int UsernameMaxLength = 20;
+
+        public const int UserAgeMin = 3;
+        public const int UserAgeMax = 103;
+
+
+
     }
 }
