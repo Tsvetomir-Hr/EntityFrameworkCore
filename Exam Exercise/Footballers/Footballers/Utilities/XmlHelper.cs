@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 
 
-namespace TeisterMask.Utilities;
+namespace Footballers.Utilities;
 
 public class XmlHelper
 {
