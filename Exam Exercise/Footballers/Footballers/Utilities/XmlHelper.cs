@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using System.Xml.Serialization;
 
-namespace Footballers.Utilities;
+
+namespace TeisterMask.Utilities;
 
 public class XmlHelper
 {
