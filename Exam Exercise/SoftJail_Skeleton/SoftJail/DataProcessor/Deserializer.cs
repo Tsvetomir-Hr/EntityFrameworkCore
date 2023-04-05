@@ -79,13 +79,13 @@
             {
                 if (!IsValid(prDto))
                 {
-                    sb.AppendLine("Invalid Data");
+                    sb.AppendLine("Invalid Data !");
                     continue;
                 }
 
                 if (prDto.Mails.Any(m => !IsValid(m)))
                 {
-                    sb.AppendLine("Invalid Data");
+                    sb.AppendLine("Invalid Data !");
                     continue;
                 }
 
