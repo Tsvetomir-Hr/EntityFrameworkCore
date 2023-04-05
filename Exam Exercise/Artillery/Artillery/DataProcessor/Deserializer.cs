@@ -158,7 +158,7 @@
                     gun.CountriesGuns.Add(country);
                 }
                 validGuns.Add(gun);
-                output.AppendLine($"Successfully import gun {gun.GunType} with a total weight of {gun.GunWeight} kg. and barrel length of {gun.BarrelLength} m.");
+                output.AppendLine($"Successfully import gun {gun.GunType} with a total weight of {gun.GunWeight} kg. and barrel length of {gun.BarrelLength} meters");
             }
             context.Guns.AddRange(validGuns);
             context.SaveChanges();
