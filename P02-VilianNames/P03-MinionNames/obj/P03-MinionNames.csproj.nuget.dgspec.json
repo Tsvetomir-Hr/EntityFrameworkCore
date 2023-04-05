@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\cveto\\source\\repos\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj": {}
+    "D:\\EntityFrameworkCore\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj": {}
   },
   "projects": {
-    "C:\\Users\\cveto\\source\\repos\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj": {
+    "D:\\EntityFrameworkCore\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cveto\\source\\repos\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj",
+        "projectUniqueName": "D:\\EntityFrameworkCore\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj",
         "projectName": "P03-MinionNames",
-        "projectPath": "C:\\Users\\cveto\\source\\repos\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj",
+        "projectPath": "D:\\EntityFrameworkCore\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj",
         "packagesPath": "C:\\Users\\cveto\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cveto\\source\\repos\\P02-VilianNames\\P03-MinionNames\\obj\\",
+        "outputPath": "D:\\EntityFrameworkCore\\P02-VilianNames\\P03-MinionNames\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\cveto\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -61,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

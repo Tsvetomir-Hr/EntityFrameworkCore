@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yXdh5/nnn6FfU8Ok4srq4YRpiS3PaCZuhDUTIanFbqJ5YLR2vXsdpVZb5EQhY9XOEDVa3hZ7Jfo7/UlysmR93A==",
+  "dgSpecHash": "RL3Kmho1VGg+77ZQaTlgbDtjjeNdU1lQO217AJX7nzeD7e+av6wgBEkXmu0tIBHKEeHgRoKWzyGVP8KuTPIkaQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\cveto\\source\\repos\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj",
+  "projectFilePath": "D:\\EntityFrameworkCore\\P02-VilianNames\\P03-MinionNames\\P03-MinionNames.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\cveto\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\cveto\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
