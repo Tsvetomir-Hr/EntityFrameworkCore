@@ -2,10 +2,10 @@
 
 namespace Eventmi.Core.Contracts
 {
-   // good pracitice is to add summaries to 
+    // good pracitice is to add summaries to 
     public interface IEventService
     {
-        Task AddAsync(EventDetailsModel model);
+        Task AddAsync(EventModel model);
 
         Task DeleteAsync(int id);
 
@@ -13,7 +13,7 @@ namespace Eventmi.Core.Contracts
 
         Task<IEnumerable<EventModel>> GetAllAsync();
 
-        Task<EventDetailsModel> GetEventAsync(int id);
+        Task<EventModel> GetEventAsync(int id);
 
 
     }

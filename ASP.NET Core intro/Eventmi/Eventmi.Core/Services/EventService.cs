@@ -2,6 +2,7 @@
 using Eventmi.Core.Models;
 using Eventmi.Infrastructure.Data.Common;
 using Eventmi.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Eventmi.Core.Services
 {
@@ -13,7 +14,7 @@ namespace Eventmi.Core.Services
             this.repo = _repo;
         }
 
-        public async Task AddAsync(EventDetailsModel model)
+        public async Task AddAsync(EventModel model)
         {
             Event entity = new Event()
             {
@@ -29,22 +30,60 @@ namespace Eventmi.Core.Services
 
         public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            await repo.DeleteAsync<Event>(id);
+
+            await repo.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<EventModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await repo.AllReadonly<Event>()
+                .Select(e => new EventModel()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    End = e.End,
+                    Start = e.Start,
+                    Place = e.Place
+                })
+                .OrderBy(e => e.Start)
+                .ToListAsync();
         }
 
-        public async Task<EventDetailsModel> GetEventAsync(int id)
+        public async Task<EventModel> GetEventAsync(int id)
         {
-            throw new NotImplementedException();
+            Event entity = await repo.GetByIdAsync<Event>(id);
+            if (entity == null)
+            {
+                throw new ArgumentException("Not valid id !", nameof(id));
+            }
+
+            return new EventModel()
+            {
+                Name = entity.Name,
+                End = entity.End,
+                Start = entity.Start,
+                Place = entity.Place,
+                Id = entity.Id
+            };
         }
 
         public async Task UpdateAsync(EventModel model)
         {
-            throw new NotImplementedException();
+
+            var entity = await repo.GetByIdAsync<Event>(model.Id);
+            if (entity == null)
+            {
+                throw new ArgumentException("Not valid id !", nameof(model.Id));
+
+            }
+
+            entity.Name = model.Name;
+            entity.Start = model.Start;
+            entity.End = model.End;
+            entity.Place = model.Place;
+
+            await repo.SaveChangesAsync();
         }
     }
 }
