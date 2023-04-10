@@ -15,16 +15,19 @@ namespace VaporStore.Data.Models
 
         [Key]
         public int Id { get; set; }
+
         [Required]
         public string Number { get; set; }
+
         [Required]
         public string Cvc { get; set; }
+
         public CardType Type { get; set; }
 
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
-        [Required]
         public virtual User User { get; set; } = null!;
+
 
         public virtual ICollection<Purchase> Purchases { get; set; }
     }

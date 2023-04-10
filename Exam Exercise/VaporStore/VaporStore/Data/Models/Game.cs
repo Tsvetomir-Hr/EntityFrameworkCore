@@ -32,6 +32,5 @@ public class Game
 
     public virtual ICollection<Purchase> Purchases { get; set; }
 
-
     public virtual ICollection<GameTag> GameTags { get; set; }
 }
