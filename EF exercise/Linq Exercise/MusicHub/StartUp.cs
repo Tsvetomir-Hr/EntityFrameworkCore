@@ -54,10 +54,10 @@ public class StartUp
         foreach (var album in albums)
         {
             sb
-                .AppendLine($"- AlbumName: {album.Name}")
-                .AppendLine($"- ReleaseDate: {album.ReleaseDate}")
-                .AppendLine($"- ProducerName: {album.ProducerName}")
-                .AppendLine($"-  Songs:    ");
+                .AppendLine($"-AlbumName: {album.Name}")
+                .AppendLine($"-ReleaseDate: {album.ReleaseDate}")
+                .AppendLine($"-ProducerName: {album.ProducerName}")
+                .AppendLine($"-Songs: ");
 
             int songNumber = 1;
             foreach ( var s in album.Songs)
