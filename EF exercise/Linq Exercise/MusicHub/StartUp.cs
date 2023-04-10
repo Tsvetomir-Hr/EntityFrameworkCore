@@ -57,7 +57,7 @@ public class StartUp
                 .AppendLine($"- AlbumName: {album.Name}")
                 .AppendLine($"- ReleaseDate: {album.ReleaseDate}")
                 .AppendLine($"- ProducerName: {album.ProducerName}")
-                .AppendLine($"- Songs:");
+                .AppendLine($"-  Songs:    ");
 
             int songNumber = 1;
             foreach ( var s in album.Songs)
