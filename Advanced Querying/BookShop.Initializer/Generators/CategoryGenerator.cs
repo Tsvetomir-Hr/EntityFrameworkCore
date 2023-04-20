@@ -20,13 +20,7 @@
                 "Children's",
                 "Science",
                 "History",
-                "Poetry",
-                "Comics",
-                "Art",
-                "Cookbooks",
-                "Journals",
-                "Biographies",
-                "Fantasy",
+           
             };
 
             int categoryCount = categoryNames.Length;
