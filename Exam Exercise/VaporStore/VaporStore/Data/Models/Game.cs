@@ -30,7 +30,7 @@ public class Game
     public virtual Genre Genre { get; set; } = null!;
 
 
-    public virtual ICollection<Purchase> Purchases { get; set; }
+    public virtual ICollection<Purchase> Purchases { get; set; } = null!;
 
-    public virtual ICollection<GameTag> GameTags { get; set; }
+    public virtual ICollection<GameTag> GameTags { get; set; } = null!;
 }
