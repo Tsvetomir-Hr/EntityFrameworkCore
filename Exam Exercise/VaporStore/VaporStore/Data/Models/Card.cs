@@ -17,10 +17,10 @@ namespace VaporStore.Data.Models
         public int Id { get; set; }
 
         [Required]
-        public string Number { get; set; }
+        public string Number { get; set; } = null!;
 
         [Required]
-        public string Cvc { get; set; }
+        public string Cvc { get; set; } = null!;
 
         public CardType Type { get; set; }
 
@@ -29,6 +29,6 @@ namespace VaporStore.Data.Models
         public virtual User User { get; set; } = null!;
 
 
-        public virtual ICollection<Purchase> Purchases { get; set; }
+        public virtual ICollection<Purchase> Purchases { get; set; } = null!;
     }
 }
