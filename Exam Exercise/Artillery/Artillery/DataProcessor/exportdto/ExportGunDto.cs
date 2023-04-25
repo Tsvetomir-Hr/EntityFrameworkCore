@@ -21,6 +21,6 @@ namespace Artillery.DataProcessor.ExportDto
         public int Range { get; set; }
 
         [XmlArray("Countries")]
-        public ExpoertContriesDto[] CountriesGuns { get; set; }
+        public ExpoertContriesDto[] CountriesGuns { get; set; } = null!;
     }
 }
