@@ -13,6 +13,10 @@ namespace Artillery.Data.Models.Enums
         FieldGun,
         AntiAircraftGun,
         MountainGun,
-        AntiTankGun
+        AntiTankGun,
+        ShortRangeGun,
+        LongRangeGun,
+        Sniper,
+        Pistol
     }
 }
