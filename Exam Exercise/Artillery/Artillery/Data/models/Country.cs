@@ -18,5 +18,5 @@ public class Country
 
     public int ArmySize { get; set; }
 
-    public virtual ICollection<CountryGun> CountriesGuns { get; set; }
+    public virtual ICollection<CountryGun> CountriesGuns { get; set; } = null!;
 }
