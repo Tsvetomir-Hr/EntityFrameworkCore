@@ -12,6 +12,9 @@ namespace Trucks.Data.Models.Enums
         Man,
         Mercedes,
         Scania,
-        Volvo
+        Volvo,
+        BMW,
+        Subaru,
+        Mazda
     }
 }
