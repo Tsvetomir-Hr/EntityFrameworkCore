@@ -7,7 +7,7 @@ namespace Trucks.DataProcessor.ExportDto
     public class ExportTruckDto
     {
         [XmlElement("RegistrationNumber")]
-        public string RegistrationNumber { get; set; }
+        public string RegistrationNumber { get; set; } = null!;
 
         [XmlElement("Make")]
         public MakeType MakeType { get; set; }
